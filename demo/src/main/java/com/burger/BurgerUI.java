@@ -2,7 +2,7 @@ package com.burger;
 
 import java.io.IOException;
 import java.util.List;
-
+import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,7 +22,7 @@ public class BurgerUI extends Application {
     Integer numPatties = 0;
 
     // Make the lists to hold the items of the burger. Will be added to and removed with the buttons
-    List<String> patties;
+    List<String> patties = new ArrayList<String>();
     List<String> cheeses;
     List<String> garnishes;
 
