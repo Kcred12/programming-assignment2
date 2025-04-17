@@ -12,6 +12,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -21,19 +23,36 @@ public class BurgerUI extends Application {
     Integer numBurgers = 0;
     Integer numPatties = 0;
 
-    // Make the lists to hold the items of the burger. Will be added to and removed with the buttons
+    // Make the lists to hold the items of the burger. Will be added to and removed
+    // with the buttons
     List<String> patties = new ArrayList<String>();
-    List<String> cheeses;
-    List<String> garnishes;
+    List<String> cheeses = new ArrayList<String>();
+    List<String> garnishes = new ArrayList<String>();
 
     Label titleLabel = new Label("Keaghon's Burger Restaraunt");
     Button makeBurger = new Button("Make burger");
 
-    // Could not think of a way around not making these global and I am running out of time
+    // Could not think of a way around not making these global and I am running out
+    // of time
     Button addBeefPatty = new Button("Add beef patty");
     Button addVeggiePatty = new Button("Add veggie patty");
     Button addImpossiblePatty = new Button("Add impossible patty");
     Button addTurkeyPatty = new Button("Add turkey patty");
+
+    // Cheese buttons
+    Button addAmericanSlice = new Button("Add american patty");
+    Button addGoudaSlice = new Button("Add gouda patty");
+    Button addCheddarSlice = new Button("Add cheddar patty");
+    Button addProvoloneSlice = new Button("Add provolone patty");
+
+    // Garnish Buttons
+    Button addLettuceButton = new Button("Add Lettuce");
+    Button addTomatoButton = new Button("Add Tomato");
+    Button addOnionsButton = new Button("Add Onions");
+    Button addPicklesButton = new Button("Add pickles");
+
+    // Alert for when they select too many options
+    Alert alert = new Alert(AlertType.ERROR);
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -59,20 +78,37 @@ public class BurgerUI extends Application {
 
                 // Horizontal box to hold all the patty choices
                 HBox pattyChoiceDisplay = new HBox();
-                pattyChoiceDisplay.getChildren().addAll(addBeefPatty, addVeggiePatty, addImpossiblePatty, addTurkeyPatty);
+                pattyChoiceDisplay.getChildren().addAll(addBeefPatty, addVeggiePatty, addImpossiblePatty,
+                        addTurkeyPatty);
+
+                Label cheesesLabel = new Label("Cheeses (Max 4):");
+
+                // Horizontal box to hold all the cheese choices
+                HBox cheeseChoiceDisplay = new HBox();
+                cheeseChoiceDisplay.getChildren().addAll(addAmericanSlice, addGoudaSlice, addCheddarSlice,
+                        addProvoloneSlice);
+
+                Label garnishesLabel = new Label("Cheeses (Max 4):");
+
+                // Horizontal box to hold all the patty choices
+                HBox garnishesChoiceDisplay = new HBox();
+                garnishesChoiceDisplay.getChildren().addAll(addLettuceButton, addTomatoButton, addOnionsButton,
+                        addPicklesButton);
 
                 // Adding all the nodes to the screen
-                root.getChildren().addAll(bunLabel, bunComboBox, pattyLabel, pattyChoiceDisplay);
+                root.getChildren().addAll(bunLabel, bunComboBox, pattyLabel, pattyChoiceDisplay, cheesesLabel,
+                        cheeseChoiceDisplay, garnishesLabel, garnishesChoiceDisplay);
 
             }
         });
 
+        // Patty button functionalities
         addBeefPatty.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                if (patties.size() > 4) {
-                    Label tooManyPattiesLabel = new Label("Only 4 patties");
-                    root.getChildren().add(tooManyPattiesLabel);
+                if (patties.size() >= 4) {
+                    alert.setContentText("Only 4 patties!");
+                    alert.showAndWait();
                 } else {
                     patties.add("Beef Patty");
                 }
@@ -82,9 +118,9 @@ public class BurgerUI extends Application {
         addVeggiePatty.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                if (patties.size() > 4) {
-                    Label tooManyPattiesLabel = new Label("Only 4 patties");
-                    root.getChildren().add(tooManyPattiesLabel);
+                if (patties.size() >= 4) {
+                    alert.setContentText("Only 4 patties!");
+                    alert.showAndWait();
                 } else {
                     patties.add("Veggie Patty");
                 }
@@ -94,9 +130,9 @@ public class BurgerUI extends Application {
         addImpossiblePatty.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                if (patties.size() > 4) {
-                    Label tooManyPattiesLabel = new Label("Only 4 patties");
-                    root.getChildren().add(tooManyPattiesLabel);
+                if (patties.size() >= 4) {
+                    alert.setContentText("Only 4 patties!");
+                    alert.showAndWait();
                 } else {
                     patties.add("Impossible Patty");
                 }
@@ -106,11 +142,109 @@ public class BurgerUI extends Application {
         addTurkeyPatty.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                if (patties.size() > 4) {
-                    Label tooManyPattiesLabel = new Label("Only 4 patties");
-                    root.getChildren().add(tooManyPattiesLabel);
+                if (patties.size() >= 4) {
+                    alert.setContentText("Only 4 patties!");
+                    alert.showAndWait();
                 } else {
                     patties.add("Turkey Patty");
+                }
+            }
+        });
+
+        // Cheese button functionalities
+        addAmericanSlice.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (cheeses.size() >= 4) {
+                    alert.setContentText("Only 4 cheeses!");
+                    alert.showAndWait();
+                } else {
+                    cheeses.add("American");
+                }
+            }
+        });
+
+        addGoudaSlice.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (cheeses.size() >= 4) {
+                    alert.setContentText("Only 4 cheeses!");
+                    alert.showAndWait();
+                } else {
+                    cheeses.add("Gouda");
+                }
+            }
+        });
+
+        addCheddarSlice.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (cheeses.size() >= 4) {
+                    alert.setContentText("Only 4 cheeses!");
+                    alert.showAndWait();
+                } else {
+                    cheeses.add("Cheddar");
+                }
+            }
+        });
+
+        addProvoloneSlice.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (cheeses.size() >= 4) {
+                    alert.setContentText("Only 4 cheeses!");
+                    alert.showAndWait();
+                } else {
+                    cheeses.add("Provolone");
+                }
+            }
+        });
+
+        // Garnish button functionalities
+        addLettuceButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (garnishes.size() >= 4) {
+                    alert.setContentText("Only 4 garnishes!");
+                    alert.showAndWait();
+                } else {
+                    garnishes.add("Lettuce");
+                }
+            }
+        });
+
+        addTomatoButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (garnishes.size() >= 4) {
+                    alert.setContentText("Only 4 garnishes!");
+                    alert.showAndWait();
+                } else {
+                    garnishes.add("Tomato");
+                }
+            }
+        });
+
+        addOnionsButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (garnishes.size() >= 4) {
+                    alert.setContentText("Only 4 garnishes!");
+                    alert.showAndWait();
+                } else {
+                    garnishes.add("Onions");
+                }
+            }
+        });
+
+        addPicklesButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (garnishes.size() >= 4) {
+                    alert.setContentText("Only 4 garnishes!");
+                    alert.showAndWait();
+                } else {
+                    garnishes.add("Pickles");
                 }
             }
         });
