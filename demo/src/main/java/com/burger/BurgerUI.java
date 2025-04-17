@@ -28,12 +28,21 @@ public class BurgerUI extends Application {
     List<String> patties = new ArrayList<String>();
     List<String> cheeses = new ArrayList<String>();
     List<String> garnishes = new ArrayList<String>();
+    List<Burger> burgers = new ArrayList<Burger>();
 
     Label titleLabel = new Label("Keaghon's Burger Restaraunt");
     Button makeBurger = new Button("Make burger");
+    Button receiptButton = new Button("Show receipt");
 
     // Could not think of a way around not making these global and I am running out
     // of time
+    ObservableList<String> bunOptions = FXCollections.observableArrayList(
+            "Brioche",
+            "Sesame Seed",
+            "Potato");
+    ComboBox bunComboBox = new ComboBox(bunOptions);
+
+    // Patty buttons
     Button addBeefPatty = new Button("Add beef patty");
     Button addVeggiePatty = new Button("Add veggie patty");
     Button addImpossiblePatty = new Button("Add impossible patty");
@@ -50,6 +59,9 @@ public class BurgerUI extends Application {
     Button addTomatoButton = new Button("Add Tomato");
     Button addOnionsButton = new Button("Add Onions");
     Button addPicklesButton = new Button("Add pickles");
+
+    // Create burger button
+    Button createBurgerButton = new Button("Create burger");
 
     // Alert for when they select too many options
     Alert alert = new Alert(AlertType.ERROR);
@@ -68,11 +80,6 @@ public class BurgerUI extends Application {
                 root.getChildren().clear();
 
                 Label bunLabel = new Label("Choose bun type");
-                ObservableList<String> bunOptions = FXCollections.observableArrayList(
-                        "Brioche",
-                        "Sesame Seed",
-                        "Potato");
-                ComboBox bunComboBox = new ComboBox(bunOptions);
 
                 Label pattyLabel = new Label("Patties (Max 4):");
 
@@ -97,7 +104,7 @@ public class BurgerUI extends Application {
 
                 // Adding all the nodes to the screen
                 root.getChildren().addAll(bunLabel, bunComboBox, pattyLabel, pattyChoiceDisplay, cheesesLabel,
-                        cheeseChoiceDisplay, garnishesLabel, garnishesChoiceDisplay);
+                        cheeseChoiceDisplay, garnishesLabel, garnishesChoiceDisplay, createBurgerButton);
 
             }
         });
@@ -249,8 +256,41 @@ public class BurgerUI extends Application {
             }
         });
 
-        root.getChildren().add(titleLabel);
-        root.getChildren().add(makeBurger);
+        createBurgerButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                Burger burger = new Burger(bunComboBox.getValue().toString(), patties, cheeses, garnishes);
+                burgers.add(burger);
+
+                // Clear the lists for reusability
+                bunComboBox.setValue(null);
+                patties.clear();
+                cheeses.clear();
+                garnishes.clear();
+
+                // Clear and go back to main screen
+                root.getChildren().clear();
+
+                root.getChildren().addAll(titleLabel, makeBurger, receiptButton);
+
+            }
+        });
+
+        receiptButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                root.getChildren().clear();
+
+                Integer burgerNumber = 1;
+                for (Burger burger : burgers) {
+                    Label burgerPriceLabel = new Label("Burger " + burgerNumber + ": $" + burger.getPrice());
+                    root.getChildren().add(burgerPriceLabel);
+                    burgerNumber += 1;
+                }
+            }
+        });
+
+        root.getChildren().addAll(titleLabel, makeBurger, receiptButton);
 
         Scene scene = new Scene(root, 640, 480);
         stage.setScene(scene);
